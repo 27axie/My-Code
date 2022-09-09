@@ -1,0 +1,150 @@
+from turtle import *
+shape('arrow')
+pensize(4)
+speed(0)
+
+def square():
+    for i in range(2):
+        fd(113)
+        rt(90)
+        fd(95)
+        rt(90)
+
+def display():
+    pu()
+    lt(90)
+    fd(300)
+    lt(90)
+    fd(300)
+    pd()
+    rt(180)
+
+    for i in range(4):
+        fd(600)
+        rt(90)
+
+    rt(90)
+
+    for i in range(5):
+        fd(100)
+        lt(90)
+        fd(600)
+        bk(600)
+        rt(90)
+
+    fd(100)
+    lt(90)
+
+    for i in range(4):
+        fd(120)
+        lt(90)
+        fd(600)
+        bk(600)
+        rt(90)
+
+    lt(180)
+    fd(480)
+    rt(90)
+    fd(600)
+    rt(90)
+
+def match(word, guess):
+    l = list(word)
+    word1 = word
+    index = 0
+    result = ['-'] * 5
+
+    if len(guess) == 5:
+        for i in range(5):
+            #Green:
+            if guess[i] == word1[i]:
+                result[i] = 'G'
+                l[i] = '?'
+
+            word1 = "".join(l)
+
+
+        for i in range(5):
+            #Yellow
+            for j in range(5):
+                if guess[i] == word1[j] and result[i] == '-':
+                    result[i] = 'Y'
+                    l[j] = '?'
+
+            word1 = "".join(l)
+
+        for i in range(5):
+            if result[i] == 'G':
+                new_upper = guess[i].upper()
+                color('green')
+                begin_fill()
+                square()
+                end_fill()
+                fd(35)
+                rt(90)
+                fd(95)
+                color('white')
+                write(new_upper, font = ('Arial', 80))
+
+            elif result[i] == 'Y':
+                new_upper = guess[i].upper()
+                color('orange')
+                begin_fill()
+                square()
+                end_fill()
+                fd(35)
+                rt(90)
+                fd(95)
+                color('white')
+                write(new_upper, font = ('Arial', 80))
+
+            elif result[i] == '-':
+                new_upper = guess[i].upper()
+                color('gray')
+                begin_fill()
+                square()
+                end_fill()
+                fd(35)
+                rt(90)
+                fd(95)
+                color('white')
+                write(new_upper, font = ('Arial', 80))
+
+            pu()
+            rt(180)
+            fd(95)
+            rt(90)
+            fd(85)
+            pd()
+
+    return result
+
+word = 'crane'
+guess = ''
+guesses = 0
+display()
+
+fd(3)
+rt(90)
+fd(2.25)
+lt(90)
+
+while guesses < 6 and word != guess:
+    guess = input("Enter a five-letter word: ")
+    print(match(word, guess))
+
+    if len(guess) == 5:
+        guesses += 1
+        pu()
+        rt(90)
+        fd(100)
+        rt(90)
+        fd(600)
+        lt(180)
+        pd()
+
+if guess == word:
+    print("Congatulations! You guessed the wordle in " + str(guesses) + " tries!")
+
+else:
+    print("Oops! You ran out of guesses! The word was: " + word + ".")
