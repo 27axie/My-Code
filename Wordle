@@ -148,3 +148,5 @@ if guess == word:
 
 else:
     print("Oops! You ran out of guesses! The word was: " + word + ".")
+    
+mainloop()
