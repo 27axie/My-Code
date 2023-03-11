@@ -1,0 +1,58 @@
+boxes = int(input("Enter the number of boxes: "))
+print('')
+pennies = input("Enter pennies in each box: ").split()
+print('')
+result = ''
+player = 1
+p1score = 0
+p2score = 0
+
+while boxes > 0:
+    result = ''
+
+    for i in range(boxes):
+        result += pennies[i] + " "
+    
+    print('')
+    print("Boxes:")
+    print(result)
+    
+    print("Player 1 score: " + str(p1score))
+    print("Player 2 score: " + str(p2score))
+    
+    move = int(input("Enter player " + str(player) + " move (1 for leftmost,2 for rightmost): "))
+    print('')
+    
+    if move != 1 and move != 2:
+        print("Invalid move!")
+    
+    elif move == 1:
+        if player == 1:
+            p1score += int(pennies[0])
+            
+        else:
+            p2score += int(pennies[0])
+            
+        pennies.pop(0)
+        boxes -= 1
+        player = 3 - player
+        
+    elif move == 2:
+        if player == 1:
+            p1score += int(pennies[-1])
+            
+        else:
+            p2score += int(pennies[-1])
+            
+        pennies.pop(-1)
+        boxes -= 1
+        player = 3 - player
+    
+print("Player 1 score: " + str(p1score))
+print("Player 2 score: " + str(p2score))
+
+if p1score == p2score:
+    print("It's a tie!")
+
+else:
+    print("Player " + str(player) + " won!")
