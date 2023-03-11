@@ -1,0 +1,25 @@
+import random
+
+number = int(input())
+guess = int(input("Guess the number: "))
+print('')
+guesses = 1
+
+while guess != number:
+    
+    if guess < 1 or guess > 100:
+        print("invalid guess")
+    
+    elif guess > number:
+        print("go down")
+        guesses += 1
+        
+    elif guess < number:
+        print("go up")
+        guesses += 1
+        
+    guess = int(input("Guess the number: "))
+    print('')
+    
+print("correct")
+print("Number of guesses: " + str(guesses))
