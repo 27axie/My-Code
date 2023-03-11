@@ -1,0 +1,27 @@
+matches = int(input("Enter the number of matches: "))
+print('')
+maximum = int(input("Enter the maximum number of matches a player can pick: "))
+player = 1
+move = ''
+
+while matches > 0:
+    print('')
+    print("Number of remaining matches: " + str(matches))
+    print('* ' * matches)
+    print('| ' * matches)
+    
+    move = int(input("Player " + str(player) + ": How many matches do you want to pick? (1,2, ..., " + str(maximum) + ")"))
+    
+    while (move < 1 or move > maximum) or ((matches - move) < 0):
+        print('')
+        print("Invalid move!")
+        print("Number of remaining matches: " + str(matches))
+        print('* ' * matches)
+        print('| ' * matches)
+        move = int(input("Player " + str(player) + ": How many matches do you want to pick? (1,2, ..., " + str(maximum) + ")"))
+    
+    matches -= move
+    player = 3 - player
+
+print('')
+print("Player " + str(3 - player) + " won the game!")
