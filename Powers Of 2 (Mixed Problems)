@@ -1,0 +1,22 @@
+a, b = input().split()
+a = int(a)
+b = int(b)
+e = a + 1
+result = 0
+deez_nuts = 0
+
+for i in range(e, 62):
+    result = 2 ** e
+    
+    while result > 10:
+        result //= 10
+        
+    if result == b:
+        print(e)
+        deez_nuts = 1
+        break
+    
+    e += 1
+    
+if deez_nuts == 0:
+    print('0')
