@@ -1,0 +1,108 @@
+### Project: Tic Tac Toe Game ###
+
+# global variables and arrays
+n=0             # board size
+board=[]        # create a board
+curPlayer=0     # current player (1 or 2)
+numOfMoves=0    # keep the number of moves
+row,col=0,0     # current move
+finish=0        # status of the game
+                # {-1:in progress, 0:tie, 1:player 1 won, 2:player 2 won}
+
+def setupGame():
+    global board
+    global numOfMoves
+    global curPlayer
+    global finish
+    curPlayer = 1
+    finish = -1
+
+    board = [""] * 3
+    
+    for row in range(3):
+        board[row] = ["-"] * 3
+        
+def drawScreen():
+    global board
+
+    for row in range(3):
+        for col in range(3):
+            print(board[row][col], end = "")
+
+        print("")
+
+    print("")
+    
+def getMove():
+    global curPlayer
+    print("Player " + str(curPlayer) + ", please enter your move (row, col):")
+
+def makeMove():
+    global board
+    global numOfMoves
+    global curPlayer
+    numOfMoves += 1
+    
+    x, y = input().split()
+    x = int(x)
+    y = int(y)
+    
+    if (x < 1 or x > 3) or (y < 1 or y > 3) or (board[x - 1][y - 1] != '-'):
+        while (x < 1 or x > 3) or (y < 1 or y > 3) or (board[x - 1][y - 1] != '-'):
+            print("Invalid move!")
+            print("Player " + str(curPlayer) + ", please enter your move (row, col):")
+            x, y = input().split()
+            x = int(x)
+            y = int(y)
+    
+    if curPlayer == 1:
+        board[x - 1][y - 1] = 'X'
+        
+    elif curPlayer == 2:
+        board[x - 1][y - 1] = 'O'
+        
+    curPlayer = 3 - curPlayer
+        
+def checkEndGame():
+    global finish
+    isItATie = True
+
+    for row in range(3):
+        for col in range(3):
+            if (board[row][col] == "-"):
+                isItATie = False
+        
+    if (board[0][0] == 'X' and board[1][1] == 'X' and board[2][2] == 'X') or (board[2][0] == 'X' and board[1][1] == 'X' and board[0][2] == 'X') or (board[1][0] == 'X' and board[1][1] == 'X' and board[1][2] == 'X') or (board[0][1] == 'X' and board[1][1] == 'X' and board[2][1] == 'X') or (board[0][0] == 'X' and board[0][1] == 'X' and board[0][2] == 'X') or (board[2][0] == 'X' and board[2][1] == 'X' and board[2][2] == 'X') or (board[0][0] == 'X' and board[1][0] == 'X' and board[2][0] == 'X') or (board[0][2] == 'X' and board[1][2] == 'X' and board[2][2] == 'X'):
+        return 1
+    
+    elif (board[0][0] == 'O' and board[1][1] == 'O' and board[2][2] == 'O') or (board[2][0] == 'O' and board[1][1] == 'O' and board[0][2] == 'O') or (board[1][0] == 'O' and board[1][1] == 'O' and board[1][2] == 'O') or (board[0][1] == 'O' and board[1][1] == 'O' and board[2][1] == 'O') or (board[0][0] == 'O' and board[0][1] == 'O' and board[0][2] == 'O') or (board[2][0] == 'O' and board[2][1] == 'O' and board[2][2] == 'O') or (board[0][0] == 'O' and board[1][0] == 'O' and board[2][0] == 'O') or (board[0][2] == 'O' and board[1][2] == 'O' and board[2][2] == 'O'):
+        return 2
+        
+    elif isItATie == True:
+        return 0
+
+    else:
+        return -1
+        
+setupGame()                     # STEP 1
+
+# main game loop
+while True:
+    drawScreen()                # STEP 2
+    getMove()                   # STEP 3
+    makeMove()                  # STEP 4
+    finish = checkEndGame()     # STEP 5
+    if finish>-1:               # if game is finished, break the loop
+        break
+
+# STEP 6: end game information
+drawScreen()
+
+if finish == 1:
+    print("Player 1 won the game!")
+    
+elif finish == 2:
+    print("Player 2 won the game!")
+    
+else:
+    print("Tie!")
