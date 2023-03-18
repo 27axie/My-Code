@@ -1,0 +1,17 @@
+n = int(input())
+cows = [-1] * 10
+counter = 0
+
+for i in range(n):
+    CowID, CowPosition = input().split()
+    CowID = int(CowID)
+    CowPosition = int(CowPosition)
+    
+    if cows[CowID - 1] == -1:
+        cows[CowID - 1] = CowPosition
+        
+    elif cows[CowID - 1] != CowPosition:
+        counter += 1
+        cows[CowID - 1] = CowPosition
+        
+print(counter)
