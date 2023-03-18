@@ -1,0 +1,99 @@
+### Project: Word Guessing Game ###
+
+# global variables and arrays
+secretWord=''                   # secret word
+maskedWord=''  
+    # masked word
+usedLetters=""                  # used letters
+lives=0                        
+    # number of remaining lives
+finish=0                        # status of the game - {-1:in progress,0:player lost,1:player won}
+letter=""                      
+    # the letter that the player chose in the current turn
+
+def setupGame():
+    global secretWord
+    secretWord = input()
+    hi = secretWord
+    global maskedWord
+    for i in range(len(secretWord)):
+        maskedWord += "*"
+
+    global lives
+    global finish
+    lives = 5
+    finish = -1
+
+def drawScreen():
+    print(maskedWord)
+    print("Remaining lives: " + str(lives))
+    print("Used letters: " + str(usedLetters))
+    print("")
+
+def getMove():
+    print("Enter a lower case letter:")
+    global letter
+    letter = input()
+    
+    index = usedLetters.find(letter)
+    
+    while index != -1:
+        print("Invalid! This letter is used before.")
+        print("Enter a lower case letter:")
+        letter = input()
+        index = usedLetters.find(letter)
+
+def makeMove():
+    global usedLetters
+    global lives
+    global secretWord
+    global maskedWord
+    usedLetters += letter
+
+    index = secretWord.find(letter)
+
+    if index != -1:
+        while index != -1:
+            maskedWord = maskedWord[0:index] + letter + maskedWord[index + 1:]
+            secretWord = secretWord[0:index] + "#" + secretWord[index + 1:]
+            index = secretWord.find(letter)
+            
+        secretWord = secretWord.replace("#", letter)
+
+    else:
+        lives -= 1
+
+def checkEndGame():
+    global lives    
+    
+    if lives == 0:
+        return 0
+
+    elif lives != 0 and secretWord != maskedWord:
+        return -1
+
+    elif secretWord == maskedWord:
+        return 1
+
+setupGame()                    
+    # step 1
+
+# main game loop
+while True:
+    drawScreen()                # step 2
+    getMove()                  
+    # step 3
+    makeMove()                  # step 4
+    finish = checkEndGame()     # step 5
+   
+    if finish>-1:
+        break
+
+# step 6: end game information
+drawScreen()
+
+if lives == 0:
+    print("You lost! The secret word was: " + secretWord)
+    
+elif secretWord == maskedWord:
+    print("You won!")
