@@ -1,0 +1,9 @@
+n = int(input())
+counter = 0
+
+for a in range(1, 500):
+    for b in range(1, 500):
+        if (b ** 2 - a ** 2) == n:
+            counter += 1
+            
+print(counter)
