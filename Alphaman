@@ -1,0 +1,177 @@
+### Project: Alphaman Game ###
+import sys
+
+# global variables and arrays
+n,m=0,0                     # maze size N x M
+maze=[]                     # current maze,
+rowAM,colAM=0,0             # Alphaman's position in maze
+rowExit,colExit=0,0         # Exit position in maze
+rowTarget,colTarget=0,0     # The new position after the move
+remainingGems = 0
+
+finish=0                    # status of the game - {-1:in progress,0:game finished}
+curMove=0                   # player's move
+
+def setupGame():
+    global maze
+    global n
+    global m
+    global rowAM
+    global colAM
+    global rowExit
+    global colExit
+    global finish
+    global remainingGems
+    n, m = input().split()
+    n = int(n)
+    m = int(m)
+    maze = [""] * n
+    finish = -1
+
+    for row in range(n):
+        maze[row] = list(input())
+
+    for row in range(n):
+        for col in range(m):
+            if maze[row][col] == "A":
+                rowAM = row
+                colAM = col
+
+            if maze[row][col] == "E":
+                rowExit = row
+                colExit = col
+                
+            if maze[row][col] == "G":
+                remainingGems += 1
+                
+def drawScreen():
+    global n
+    global m
+    global remainingGems
+    heheheha = ""
+
+    for row in range(n):
+        for col in range(m):
+            heheheha += str(maze[row][col])
+
+        print(heheheha)
+        heheheha = ""
+        
+    print("Remaining gems: " + str(remainingGems))
+    print("")
+    
+def getMove():
+    global curMove
+    global rowAM
+    global colAM
+    global rowTarget
+    global colTarget
+    global remainingGems
+    print("Enter move: ")
+    curMove = str(input())
+
+    if curMove == "l":
+        if (maze[rowAM][colAM - 1] == '#') or (maze[rowAM][colAM - 1] == 'E' and remainingGems > 0):
+            print("Invalid move!")
+            getMove()
+            
+        elif maze[rowAM][colAM - 1] == 'G':
+            remainingGems -= 1
+            rowTarget = rowAM
+            colTarget = colAM - 1
+            
+        elif maze[rowAM][colAM - 1] == 'M':
+            maze[rowAM][colAM] = '.'
+            drawScreen()
+            print("You lost!!!")
+            sys.exit()
+            
+        else:
+            rowTarget = rowAM
+            colTarget = colAM - 1
+
+    elif curMove == "r":
+        if (maze[rowAM][colAM + 1] == '#') or (maze[rowAM][colAM + 1] == 'E' and remainingGems > 0):
+            print("Invalid move!")
+            getMove()
+            
+        elif maze[rowAM][colAM + 1] == 'G':
+            remainingGems -= 1
+            rowTarget = rowAM
+            colTarget = colAM + 1
+        
+        else:
+            rowTarget = rowAM
+            colTarget = colAM + 1
+
+    elif curMove == "u":
+        if (maze[rowAM - 1][colAM] == '#') or (maze[rowAM - 1][colAM] == 'E' and remainingGems > 0):
+            print("Invalid move!")
+            getMove()
+            
+        elif maze[rowAM - 1][colAM] == 'G':
+            remainingGems -= 1
+            rowTarget = rowAM - 1
+            colTarget = colAM
+            
+        else:
+            rowTarget = rowAM - 1
+            colTarget = colAM
+
+    elif curMove == "d":
+        if (maze[rowAM + 1][colAM] == '#') or (maze[rowAM + 1][colAM] == 'E' and remainingGems > 0):
+            print("Invalid move!")
+            getMove()
+            
+        elif maze[rowAM + 1][colAM] == 'G':
+            remainingGems -= 1
+            rowTarget = rowAM + 1
+            colTarget = colAM
+            
+        else:
+            rowTarget = rowAM + 1
+            colTarget = colAM
+
+def makeMove():
+    global rowAM
+    global colAM
+    global rowTarget
+    global colTarget
+
+    maze[rowAM][colAM] = "."
+    maze[rowTarget][colTarget] = "A"
+
+    rowAM, colAM = rowTarget, colTarget
+    
+def checkEndGame():
+    global finish
+    counter = 0
+
+    for row in range(n):
+        for col in range(m):
+            if maze[row][col] == "A":
+                counter += 1
+
+            if maze[row][col] == "E":
+                counter += 1
+
+    if counter == 1:
+        return 0
+
+    else:
+        return -1
+        
+setupGame()                     # STEP 1
+
+# main game loop
+while True:
+    drawScreen()                # STEP 2
+    getMove()                   # STEP 3
+    makeMove()                  # STEP 4
+    finish = checkEndGame()     # STEP 5
+    if finish>-1:               # if game is finished, break the loop
+        break
+
+# STEP 6: end game information
+drawScreen()
+print("Congrats, you finished!!!")
