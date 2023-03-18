@@ -1,0 +1,146 @@
+### Project: Toads and Frogs Game ###
+
+# global variables and arrays
+n=0                         # board size
+board=[]                   
+    # current board
+dashPos=0                   # the position of the empty spot on the current board
+finish=0                   
+    # status of the game - {-1:in progress,0:game finished}
+curMove=0                   # the move chosen by the player in the current turn
+numOfMoves=0               
+    # keep the number of moves
+
+def setupGame():
+    global n
+    global finish
+    global board
+    n = int(input())
+    finish = -1
+
+    for i in range(int(n/2)):
+        board += "T"
+
+    board += "-"
+
+    for i in range(int(n/2)):
+        board += "F"
+
+def drawScreen():
+    global board
+    global numOfMoves
+    
+    for i in range(len(board)):
+        print(board[i], end = "")
+
+    print("")
+    print("Number of moves: " + str(numOfMoves))
+    print("")
+
+def getMove():
+    global curMove
+    global n
+    print("Enter move (1.." + str(n) + "):")
+    curMove = int(input())
+    #print(curMove)
+    valid = False
+    
+    while valid == False:
+        # if the curMove is greater than board length or less than 0
+        if curMove>len(board) or curMove < 0:
+            print("Invalid move!")
+            print("Enter move (1.." + str(n) + "):")
+            curMove = int(input())
+        # else if the element at board[curMove-1] is equal to T
+        
+        elif board[curMove-1] == "T":
+        # if curMove is greater or equal to than the length of the board
+            if curMove>=len(board):
+                print("Invalid move!")
+                print("Enter move (1.." + str(n) + "):")
+                curMove = int(input())
+        
+        # else if board[curMovel is equal to - or board[curMove+17 is equal to
+            elif board[curMove] == '-' or board[curMove + 1] == '-':
+                valid = True
+                #print("Hello")
+        
+        # otherwise
+            else:
+                print("Invalid move!")
+                print("Enter move (1.." + str(n) + "):")
+                curMove = int(input())
+    
+        # else if the element at board[curMove-1] is equal to
+        elif board[curMove-1] == '-':
+            print("Invalid move!")
+            print("Enter move (1.." + str(n) + "):")
+            curMove = int(input())
+        
+        # else if the element at board[curMove-1] is equal to F
+        elif board[curMove-1] == 'F':
+        
+        # if board[curMove-2] is equal to - or board[curMove-3] is equal to
+            if (board[curMove-2] == '-' or board[curMove-3] == '-') and curMove - 2 > -1:
+                valid = True
+                #print("There")
+        
+            else:
+                print("Invalid move!")
+                print("Enter move (1.." + str(n) + "):")
+                curMove = int(input())
+
+def makeMove():
+    global numOfMoves
+    global curMove
+    global board
+
+    for i in range(len(board)):
+        index = board[i]
+
+        if index == "-":
+            hi = i
+    
+    if board[curMove - 1] == "F": 
+        board[hi] = "F"
+        board[curMove - 1] = "-"
+
+    elif board[curMove - 1] == "T":
+        board[hi] = "T"
+        board[curMove - 1] = "-"
+    
+    #print(curMove)
+    #print(board)
+    numOfMoves += 1
+
+def checkEndGame():
+    hi = 0
+
+    for i in range(int(n / 2)):
+        if board[i] == "F":
+            hi += 1
+
+    if board[hi] == "-":
+        if hi == int(n / 2):
+            return 0
+
+    return -1
+
+setupGame()                     # step 1
+
+# main
+# game loop
+while True:
+    drawScreen()                # step 2
+    getMove()                  
+    # step 3
+    makeMove()                  # step 4
+    finish = checkEndGame()     # step 5
+   
+    if finish>-1:
+        break
+
+# step 6: end game information
+drawScreen()
+
+print("You finished!")
